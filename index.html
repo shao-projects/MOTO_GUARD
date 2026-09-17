@@ -12,6 +12,12 @@
   #map{height:58vh;width:100%;background:#0a0e13}
   @media(min-width:768px){#map{height:calc(100vh - 88px)}}
   .mono{font-family:ui-monospace,monospace}
+  /* Dark mode tiles - no watermark, zoom 19 supported */
+  .dark-tiles .leaflet-tile{
+    filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9) saturate(0.9);
+  }
+  .dark-tiles .leaflet-container{background:#000}
+  .dark-tiles #map{background:#000}
 </style>
 </head>
 <body class="bg-[#080a0d] text-zinc-100">
@@ -230,12 +236,8 @@ let radius=parseInt(localStorage.getItem('mg_radius')||'500');
 let theme=localStorage.getItem('mapTheme')||'dark';
 let moto={...BOAC};
 
-// === TILE PROVIDERS - NO API KEY ===
+// === TILE PROVIDERS - NO API KEY, NO ZOOM LIMIT ===
 const OSM_LIGHT="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-const ESRI_DARK_BASE="https://server.arcgisonline.com/ArcGIS/rest/services"
- +"/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}";
-const ESRI_DARK_REF="https://server.arcgisonline.com/ArcGIS/rest/services"
- +"/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
 
 function distM(a,b){
   const R=6371000;
@@ -260,24 +262,26 @@ const map=L.map('map',{
   attributionControl:false
 }).setView([fence.lat,fence.lng],16);
 
-let baseLayer, refLayer;
+let baseLayer;
 function applyTiles(t){
   if(baseLayer) map.removeLayer(baseLayer);
-  if(refLayer) map.removeLayer(refLayer);
-  if(t==='light'){
-    baseLayer=L.tileLayer(OSM_LIGHT,{
-      maxZoom:19,
-      attribution:'© OSM'
-    }).addTo(map);
-  }else{
-    baseLayer=L.tileLayer(ESRI_DARK_BASE,{
-      maxZoom:19,
-      attribution:'© Esri © OSM'
-    }).addTo(map);
-    refLayer=L.tileLayer(ESRI_DARK_REF,{
-      maxZoom:19
-    }).addTo(map);
+  baseLayer=L.tileLayer(OSM_LIGHT,{
+    maxZoom:19,
+    maxNativeZoom:19,
+    attribution:'© OpenStreetMap'
+  }).addTo(map);
+  
+  // Apply dark filter via CSS - no watermark, zoom 19 works!
+  const mapDiv = document.getElementById('map');
+  const container = mapDiv.parentElement;
+  if(t==='dark'){
+    container.classList.add('dark-tiles');
+    document.body.classList.add('dark-tiles');
+  } else {
+    container.classList.remove('dark-tiles');
+    document.body.classList.remove('dark-tiles');
   }
+  
   localStorage.setItem('mapTheme',t);
   document.getElementById('themeLabel').textContent=t.toUpperCase();
   document.getElementById('themeToggle').checked=(t==='dark');
