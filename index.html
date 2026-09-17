@@ -95,7 +95,7 @@
           <div>
             <div id="alertTitle"
              class="text-[12px] font-semibold text-emerald-200">
-              Ligtas
+              SAFE
             </div>
             <div id="alertSub"
              class="mono text-[10px] text-zinc-400">0m inside</div>
@@ -131,7 +131,7 @@
         </div>
         <div class="bg-black/30 rounded p-2 border border-zinc-800">
           <div class="text-zinc-500">AUTO RADIUS</div>
-          <div class="text-cyan-200 mt-0.5" id="autoRadiusLabel">200m (market mode)</div>
+          <div class="text-cyan-200 mt-0.5" id="autoRadiusLabel">200m </div>
         </div>
       </div>
       <div class="mono text-[9px] text-zinc-500 mt-2 leading-snug">
@@ -168,11 +168,11 @@
       <div class="grid grid-cols-2 gap-2 mt-2">
         <button id="btnToMoto"
          class="h-9 rounded bg-[#101a24] border border-zinc-800 mono text-[10px]">
-          🏍️ SET TO MOTO
+          🏍️ SET MOTORCYCLE
         </button>
         <button id="btnToHome"
          class="h-9 rounded bg-[#101a24] border border-zinc-800 mono text-[10px]">
-          🏠 SET TO HOME
+          🏠 SET HOME
         </button>
       </div>
 
@@ -181,12 +181,12 @@
        mono text-[10px] text-zinc-400 leading-snug">
         <b class="text-zinc-200">HOME:</b> 
         <span id="centerLabel" class="text-cyan-200">
-          13.4473, 121.8410
+          13.45432, 121.84469
         </span><br>
         • Drag cyan dot = move home<br>
-        • SET TO MOTO = home = current GPS of motorcycle<br>
+        • SET TO MOTORCYCLE = home = current GPS of motorcycle<br>
         • SET TO HOME = back to Boac default<br>
-        • Moto location = auto from NEO-6M GPS module
+        • MOTORCYCLE LOCATION = auto from NEO-6M GPS
       </div>
 
       <button id="btnSave"
@@ -357,11 +357,11 @@ function updateUI(){
   const sub=document.getElementById('alertSub');
   if(!inside){
     box.className='rounded-xl border p-3 border-red-500/30 bg-red-950/20';
-    title.textContent='ALERTO! Lumabas';
-    sub.textContent=Math.round(d)+'m layo';
+    title.textContent='ALERT!!! OUT OF RANGE';
+    sub.textContent=Math.round(d)+'m range';
   }else{
     box.className='rounded-xl border p-3 border-emerald-500/20 bg-emerald-950/20';
-    title.textContent='Ligtas - Inside';
+    title.textContent='SAFE - IN RANGE';
     sub.textContent=Math.round(d)+'m inside';
   }
 }
